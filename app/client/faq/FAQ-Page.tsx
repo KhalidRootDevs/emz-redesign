@@ -1,3 +1,5 @@
+"use client";
+
 import { Card } from "@/components/ui/card";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
