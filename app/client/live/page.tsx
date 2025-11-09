@@ -264,54 +264,73 @@ export default function LiveMatchesPage() {
 
   return (
     <div className="max-w-7xl mx-auto p-4 lg:p-8 space-y-6 text-gray-100">
-      {/* Page Title */}
-      <div>
-        <h1 className="text-3xl font-bold mb-2 text-gray-100">Live Matches</h1>
-        <p className="text-gray-400">
-          Watch live football matches from around the world
-        </p>
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold mb-2 text-gray-100 bg-gradient-to-r from-[#C8E62A] to-[#9BB81F] bg-clip-text text-transparent">
+            Live Matches
+          </h1>
+          <p className="text-gray-400 text-sm">
+            Watch live football matches from around the world
+          </p>
+        </div>
+
+        {/* Live Indicator */}
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-red-900/30 to-red-800/20 border border-red-800/50">
+          <div className="flex items-center gap-1.5">
+            <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
+            <TvMinimalPlay className="w-4 h-4 text-red-500" />
+          </div>
+          <span className="text-sm font-semibold text-gray-100">
+            {filteredMatches.length} Live{" "}
+            {filteredMatches.length === 1 ? "Match" : "Matches"}
+          </span>
+        </div>
       </div>
 
-      {/* Filters */}
-      <Card className="p-4 rounded-xl bg-gray-800 border border-gray-700">
-        <div className="flex flex-col md:flex-row gap-4">
+      {/* Search & Filter Card */}
+      <Card className="p-4 rounded-xl bg-gradient-to-br from-gray-800/80 to-gray-900/90 border border-gray-700/50">
+        <div className="flex flex-col md:flex-row gap-3">
           {/* Search */}
           <div className="relative flex-1">
-            <input
-              type="text"
-              placeholder="Search teams or leagues..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full rounded-lg pl-10 pr-4 py-2.5 bg-gray-800 border border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#C8E62A] focus:border-transparent"
-            />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            <div className="absolute inset-0 bg-gradient-to-r from-[#C8E62A] to-[#9BB81F] rounded-lg blur-sm opacity-30"></div>
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search teams or leagues..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full rounded-lg pl-10 pr-4 h-10 py-2.5 bg-gray-800/90 border border-gray-600 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#C8E62A] focus:border-transparent text-sm"
               />
-            </svg>
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-300"
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
               >
-                <X className="w-5 h-5" />
-              </button>
-            )}
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-300"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Filter Button */}
           <Button
             variant="outline"
-            className="md:w-auto flex items-center justify-center gap-2 border-[#C8E62A] text-[#C8E62A] hover:bg-[#C8E62A]/10 bg-transparent"
+            className="md:w-auto flex items-center justify-center h-10 gap-2 border-[#C8E62A] text-[#C8E62A] hover:bg-[#C8E62A]/10 bg-transparent text-sm py-2.5"
             onClick={() => setIsFilterOpen(!isFilterOpen)}
           >
             <Filter className="w-4 h-4" />
@@ -326,16 +345,16 @@ export default function LiveMatchesPage() {
 
         {/* League Filters */}
         {isFilterOpen && (
-          <div className="mt-4 pt-4 border-t border-gray-800">
+          <div className="mt-4 pt-4 border-t border-gray-700/50">
             <div className="flex flex-wrap gap-2">
               {leagues.map((league) => (
                 <button
                   key={league.id}
                   onClick={() => toggleLeague(league.id.toString())}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition-all duration-200 ${
                     selectedLeagues.includes(league.id.toString())
-                      ? "bg-[#C8E62A]/20 text-[#C8E62A] border-2 border-[#C8E62A]"
-                      : "bg-gray-800 text-gray-300 border-2 border-transparent hover:bg-gray-700"
+                      ? "bg-gradient-to-r from-[#C8E62A] to-[#9BB81F] text-gray-900 font-semibold shadow-md"
+                      : "bg-gray-800/70 text-gray-300 border border-gray-700 hover:bg-gray-700/70"
                   }`}
                 >
                   <Image
@@ -345,18 +364,16 @@ export default function LiveMatchesPage() {
                     height={16}
                     className="w-4 h-4 object-contain"
                   />
-                  <span className="text-xs sm:text-sm font-medium">
-                    {league.name}
-                  </span>
+                  <span className="font-medium">{league.name}</span>
                 </button>
               ))}
               {selectedLeagues.length > 0 && (
                 <button
                   onClick={clearFilters}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm bg-[#C8E62A] hover:bg-[#C8E62A]/90 text-gray-900 font-semibold"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs bg-gray-700 hover:bg-gray-600 text-gray-100 font-medium"
                 >
-                  <X className="w-4 h-4" />
-                  Clear Filters
+                  <X className="w-3 h-3" />
+                  Clear
                 </button>
               )}
             </div>
@@ -364,111 +381,105 @@ export default function LiveMatchesPage() {
         )}
       </Card>
 
-      {/* Live Matches Count */}
-      <div className="flex items-center gap-2 text-lg font-semibold text-gray-100">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-          <TvMinimalPlay className="w-5 h-5 text-red-500" />
-        </div>
-        <span>
-          {filteredMatches.length} Live{" "}
-          {filteredMatches.length === 1 ? "Match" : "Matches"}
-        </span>
-      </div>
-
-      {/* Live Matches Grid */}
+      {/* Compact Live Matches Grid */}
       {filteredMatches.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredMatches.map((match) => (
             <Card
               key={match.id}
-              className="p-4 rounded-xl hover:shadow-lg transition-all duration-300 cursor-pointer group bg-gray-800 border border-gray-700"
+              className="p-3 rounded-xl hover:shadow-lg transition-all duration-200 cursor-pointer group bg-gradient-to-br from-gray-800/80 to-gray-900/90 border border-gray-700/50 hover:border-[#C8E62A]/30 relative"
             >
-              {/* League Header */}
-              <div className="flex items-center justify-between mb-4">
+              {/* Live indicator */}
+              <div className="absolute -top-1 right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-md">
+                <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
+                LIVE
+              </div>
+
+              {/* League Header - Compact */}
+              <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <Image
                     src={match.league.image || "/placeholder.svg"}
                     alt={match.league.name}
-                    width={20}
-                    height={20}
-                    className="w-5 h-5 object-contain"
+                    width={16}
+                    height={16}
+                    className="w-4 h-4 object-contain"
                   />
-                  <span className="text-sm font-semibold text-gray-300">
+                  <span className="text-xs font-medium text-gray-400 truncate max-w-[100px]">
                     {match.league.name}
                   </span>
                 </div>
-                <div className="flex items-center gap-1">
-                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                  <span className="text-xs text-red-500 font-bold">LIVE</span>
-                </div>
               </div>
 
-              {/* Match Content */}
-              <div className="space-y-4">
+              {/* Match Content - Compact */}
+              <div className="space-y-2.5">
                 {/* Team 1 */}
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 flex-1">
-                    <Image
-                      src={match.participants[0].image || "/placeholder.svg"}
-                      alt={match.participants[0].name}
-                      width={40}
-                      height={40}
-                      className="w-10 h-10 object-contain"
-                    />
-                    <span className="font-semibold text-sm text-gray-100">
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <div className="w-6 h-6 bg-gray-800/50 rounded flex items-center justify-center p-0.5 border border-gray-700/30 flex-shrink-0">
+                      <Image
+                        src={match.participants[0].image || "/placeholder.svg"}
+                        alt={match.participants[0].name}
+                        width={16}
+                        height={16}
+                        className="w-4 h-4 object-contain"
+                      />
+                    </div>
+                    <span className="text-sm font-medium text-gray-100 truncate">
                       {match.participants[0].name}
                     </span>
                   </div>
-                  <span className="text-2xl font-bold text-[#C8E62A]">
+                  <span className="text-lg font-bold text-[#C8E62A] ml-2 flex-shrink-0">
                     {match.participants[0].score}
                   </span>
                 </div>
 
                 {/* Team 2 */}
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 flex-1">
-                    <Image
-                      src={match.participants[1].image || "/placeholder.svg"}
-                      alt={match.participants[1].name}
-                      width={40}
-                      height={40}
-                      className="w-10 h-10 object-contain"
-                    />
-                    <span className="font-semibold text-sm text-gray-100">
+                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                    <div className="w-6 h-6 bg-gray-800/50 rounded flex items-center justify-center p-0.5 border border-gray-700/30 flex-shrink-0">
+                      <Image
+                        src={match.participants[1].image || "/placeholder.svg"}
+                        alt={match.participants[1].name}
+                        width={16}
+                        height={16}
+                        className="w-4 h-4 object-contain"
+                      />
+                    </div>
+                    <span className="text-sm font-medium text-gray-100 truncate">
                       {match.participants[1].name}
                     </span>
                   </div>
-                  <span className="text-2xl font-bold text-[#C8E62A]">
+                  <span className="text-lg font-bold text-[#C8E62A] ml-2 flex-shrink-0">
                     {match.participants[1].score}
                   </span>
                 </div>
               </div>
 
-              {/* Watch Button */}
-              <Button className="w-full mt-4 bg-[#C8E62A] hover:bg-[#C8E62A]/90 text-gray-900 font-semibold">
-                <TvMinimalPlay className="w-4 h-4 mr-2" />
-                Watch Now
+              {/* Compact Watch Button */}
+              <Button className="w-full mt-3 bg-gradient-to-r from-[#C8E62A] to-[#9BB81F] hover:from-[#B5D526] hover:to-[#8AA91C] text-gray-900 font-semibold py-2 rounded-lg text-sm transition-all duration-200">
+                <TvMinimalPlay className="w-3 h-3 mr-1.5" />
+                Watch
               </Button>
             </Card>
           ))}
         </div>
       ) : (
-        <Card className="rounded-xl p-12 text-center bg-gray-800 border border-gray-700">
-          <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-            <TvMinimalPlay className="w-8 h-8 text-gray-500" />
+        <Card className="rounded-xl p-8 text-center bg-gradient-to-br from-gray-800/80 to-gray-900/90 border border-gray-700/50">
+          <div className="w-16 h-16 bg-gray-800/50 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-700/30">
+            <TvMinimalPlay className="w-6 h-6 text-gray-500" />
           </div>
-          <h3 className="text-xl font-semibold mb-2 text-gray-100">
+          <h3 className="text-xl font-bold mb-2 text-gray-100">
             No live matches found
           </h3>
-          <p className="text-gray-400 mb-6">
+          <p className="text-gray-400 mb-6 text-sm max-w-md mx-auto">
             There are no live matches matching your search criteria. Try
             adjusting your filters or check back later.
           </p>
           {(selectedLeagues.length > 0 || searchQuery) && (
             <Button
               onClick={clearFilters}
-              className="bg-[#C8E62A] hover:bg-[#C8E62A]/90 text-gray-900 font-semibold"
+              className="bg-gradient-to-r from-[#C8E62A] to-[#9BB81F] hover:from-[#B5D526] hover:to-[#8AA91C] text-gray-900 font-semibold px-5 py-2.5 rounded-lg text-sm"
             >
               Clear Filters
             </Button>
