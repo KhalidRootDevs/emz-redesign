@@ -434,7 +434,7 @@ export default function MatchesPage() {
                 placeholder="Search matches, teams or leagues..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg pl-10 pr-10 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-[#C8E62A] focus:bg-gray-750 transition-all"
+                className="w-full bg-gray-700 border border-gray-600 h-10 rounded-lg pl-10 pr-10 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-[#C8E62A] focus:bg-gray-750 transition-all"
               />
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               {searchQuery && (
@@ -453,8 +453,8 @@ export default function MatchesPage() {
               variant={isFilterOpen || hasActiveFilters ? "default" : "outline"}
               className={
                 isFilterOpen || hasActiveFilters
-                  ? "bg-[#C8E62A] hover:bg-[#C8E62A]/90 text-gray-900"
-                  : "border-gray-600 text-gray-300 hover:bg-gray-700"
+                  ? "bg-[#C8E62A] hover:bg-[#C8E62A]/90 text-gray-900 h-10"
+                  : "border-gray-600 text-gray-300 hover:bg-gray-700 h-10"
               }
             >
               <SlidersHorizontal className="w-4 h-4 mr-2" />
@@ -468,7 +468,7 @@ export default function MatchesPage() {
           {/* View Controls */}
           <div className="flex items-center gap-3">
             {/* View Mode Toggle */}
-            <div className="flex items-center bg-gray-700 border border-gray-600 rounded-lg p-1">
+            <div className="flex items-center bg-gray-700 border border-gray-600 rounded-md p-1 h-10">
               <button
                 onClick={() => setViewMode("grid")}
                 className={`p-2 rounded transition-all ${
